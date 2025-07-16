@@ -36,7 +36,7 @@ class _FireworksDemoState extends State<FireworksDemo> {
     setState(() {
       _showFirework = true;
     });
-    
+
     // Reset after animation completes
     Future.delayed(const Duration(seconds: 4), () {
       if (mounted) {
@@ -51,7 +51,7 @@ class _FireworksDemoState extends State<FireworksDemo> {
     setState(() {
       _showFireworkShow = true;
     });
-    
+
     // Reset after show completes
     Future.delayed(const Duration(seconds: 8), () {
       if (mounted) {
@@ -95,7 +95,10 @@ class _FireworksDemoState extends State<FireworksDemo> {
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.orange,
                     foregroundColor: Colors.white,
-                    padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 32,
+                      vertical: 16,
+                    ),
                   ),
                   child: const Text('Launch Single Firework'),
                 ),
@@ -105,7 +108,10 @@ class _FireworksDemoState extends State<FireworksDemo> {
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.purple,
                     foregroundColor: Colors.white,
-                    padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 32,
+                      vertical: 16,
+                    ),
                   ),
                   child: const Text('Launch Firework Show'),
                 ),
@@ -116,21 +122,24 @@ class _FireworksDemoState extends State<FireworksDemo> {
                     'Click the buttons to see different firework demonstrations.\n'
                     'The fireworks are completely click-through and won\'t interfere with your UI!',
                     textAlign: TextAlign.center,
-                    style: TextStyle(
-                      color: Colors.white70,
-                      fontSize: 16,
-                    ),
+                    style: TextStyle(color: Colors.white70, fontSize: 16),
                   ),
                 ),
               ],
             ),
           ),
-          
+
           // Single firework
           if (_showFirework)
             Firework(
-              startingPosition: Offset(MediaQuery.of(context).size.width / 2, MediaQuery.of(context).size.height),
-              endingPosition: Offset(MediaQuery.of(context).size.width / 3, MediaQuery.of(context).size.height / 3),
+              startingPosition: Offset(
+                MediaQuery.of(context).size.width / 2,
+                MediaQuery.of(context).size.height,
+              ),
+              endingPosition: Offset(
+                MediaQuery.of(context).size.width / 3,
+                MediaQuery.of(context).size.height / 3,
+              ),
               particleColors: const [Colors.red, Colors.orange, Colors.yellow],
               ringColor: Colors.red,
               onComplete: () {
@@ -139,15 +148,21 @@ class _FireworksDemoState extends State<FireworksDemo> {
                 });
               },
             ),
-          
+
           // Firework show
           if (_showFireworkShow)
             FireworkShow(
               fireworks: [
                 FireworkConfig(
                   delay: Duration.zero,
-                  startingPosition: Offset(MediaQuery.of(context).size.width * 0.5, MediaQuery.of(context).size.height),
-                  endingPosition: Offset(MediaQuery.of(context).size.width * 0.3, MediaQuery.of(context).size.height * 0.4),
+                  startingPosition: Offset(
+                    MediaQuery.of(context).size.width * 0.5,
+                    MediaQuery.of(context).size.height,
+                  ),
+                  endingPosition: Offset(
+                    MediaQuery.of(context).size.width * 0.3,
+                    MediaQuery.of(context).size.height * 0.4,
+                  ),
                   particleColors: const [Colors.red, Colors.pink],
                   ringColor: Colors.red,
                   particleCount: 12,
@@ -155,8 +170,14 @@ class _FireworksDemoState extends State<FireworksDemo> {
                 ),
                 FireworkConfig(
                   delay: Duration.zero,
-                  startingPosition: Offset(MediaQuery.of(context).size.width * 0.5, MediaQuery.of(context).size.height),
-                  endingPosition: Offset(MediaQuery.of(context).size.width * 0.7, MediaQuery.of(context).size.height * 0.5),
+                  startingPosition: Offset(
+                    MediaQuery.of(context).size.width * 0.5,
+                    MediaQuery.of(context).size.height,
+                  ),
+                  endingPosition: Offset(
+                    MediaQuery.of(context).size.width * 0.7,
+                    MediaQuery.of(context).size.height * 0.5,
+                  ),
                   particleColors: const [Colors.blue, Colors.cyan],
                   ringColor: Colors.blue,
                   particleCount: 16,
@@ -164,17 +185,33 @@ class _FireworksDemoState extends State<FireworksDemo> {
                 ),
                 FireworkConfig(
                   delay: Duration.zero,
-                  startingPosition: Offset(MediaQuery.of(context).size.width * 0.5, MediaQuery.of(context).size.height),
-                  endingPosition: Offset(MediaQuery.of(context).size.width * 0.5, MediaQuery.of(context).size.height * 0.3),
-                  particleColors: const [Colors.yellow, Colors.orange, Colors.red],
+                  startingPosition: Offset(
+                    MediaQuery.of(context).size.width * 0.5,
+                    MediaQuery.of(context).size.height,
+                  ),
+                  endingPosition: Offset(
+                    MediaQuery.of(context).size.width * 0.5,
+                    MediaQuery.of(context).size.height * 0.3,
+                  ),
+                  particleColors: const [
+                    Colors.yellow,
+                    Colors.orange,
+                    Colors.red,
+                  ],
                   ringColor: Colors.orange,
                   particleCount: 20,
                   curve: Curves.easeOut,
                 ),
                 FireworkConfig(
                   delay: Duration(milliseconds: 600),
-                  startingPosition: Offset(MediaQuery.of(context).size.width * 0.5, MediaQuery.of(context).size.height),
-                  endingPosition: Offset(MediaQuery.of(context).size.width * 0.3, MediaQuery.of(context).size.height * 0.4),
+                  startingPosition: Offset(
+                    MediaQuery.of(context).size.width * 0.5,
+                    MediaQuery.of(context).size.height,
+                  ),
+                  endingPosition: Offset(
+                    MediaQuery.of(context).size.width * 0.3,
+                    MediaQuery.of(context).size.height * 0.4,
+                  ),
                   particleColors: const [Colors.red, Colors.pink],
                   ringColor: Colors.red,
                   particleCount: 12,
@@ -182,8 +219,14 @@ class _FireworksDemoState extends State<FireworksDemo> {
                 ),
                 FireworkConfig(
                   delay: const Duration(milliseconds: 600),
-                  startingPosition: Offset(MediaQuery.of(context).size.width * 0.5, MediaQuery.of(context).size.height),
-                  endingPosition: Offset(MediaQuery.of(context).size.width * 0.7, MediaQuery.of(context).size.height * 0.5),
+                  startingPosition: Offset(
+                    MediaQuery.of(context).size.width * 0.5,
+                    MediaQuery.of(context).size.height,
+                  ),
+                  endingPosition: Offset(
+                    MediaQuery.of(context).size.width * 0.7,
+                    MediaQuery.of(context).size.height * 0.5,
+                  ),
                   particleColors: const [Colors.blue, Colors.cyan],
                   ringColor: Colors.blue,
                   particleCount: 16,
@@ -191,9 +234,19 @@ class _FireworksDemoState extends State<FireworksDemo> {
                 ),
                 FireworkConfig(
                   delay: const Duration(milliseconds: 600),
-                  startingPosition: Offset(MediaQuery.of(context).size.width * 0.5, MediaQuery.of(context).size.height),
-                  endingPosition: Offset(MediaQuery.of(context).size.width * 0.5, MediaQuery.of(context).size.height * 0.3),
-                  particleColors: const [Colors.yellow, Colors.orange, Colors.red],
+                  startingPosition: Offset(
+                    MediaQuery.of(context).size.width * 0.5,
+                    MediaQuery.of(context).size.height,
+                  ),
+                  endingPosition: Offset(
+                    MediaQuery.of(context).size.width * 0.5,
+                    MediaQuery.of(context).size.height * 0.3,
+                  ),
+                  particleColors: const [
+                    Colors.yellow,
+                    Colors.orange,
+                    Colors.red,
+                  ],
                   ringColor: Colors.orange,
                   particleCount: 20,
                   curve: Curves.easeOut,

@@ -16,11 +16,13 @@ void main() {
           ),
         ),
       );
-      
+
       expect(find.byType(Firework), findsOneWidget);
     });
 
-    testWidgets('Firework widget with custom properties can be created', (WidgetTester tester) async {
+    testWidgets('Firework widget with custom properties can be created', (
+      WidgetTester tester,
+    ) async {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
@@ -35,7 +37,7 @@ void main() {
           ),
         ),
       );
-      
+
       expect(find.byType(Firework), findsOneWidget);
     });
   });
@@ -48,7 +50,7 @@ void main() {
         endingPosition: const Offset(200, 200),
         particleColors: const [Colors.red, Colors.blue],
       );
-      
+
       expect(config.delay, Duration.zero);
       expect(config.startingPosition, const Offset(100, 500));
       expect(config.endingPosition, const Offset(200, 200));
@@ -64,7 +66,7 @@ void main() {
         particleColors: const [Colors.red, Colors.blue],
         gravity: 75.0,
       );
-      
+
       expect(config.gravity, 75.0);
     });
   });
