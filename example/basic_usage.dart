@@ -47,12 +47,8 @@ class _FireworkExampleScreenState extends State<FireworkExampleScreen> {
           // Your app content goes here
           Center(
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                const Text(
-                  'This is your app content',
-                  style: TextStyle(color: Colors.white, fontSize: 20),
-                ),
                 const SizedBox(height: 20),
                 ElevatedButton(
                   onPressed: _launchFirework,
@@ -64,6 +60,7 @@ class _FireworkExampleScreenState extends State<FireworkExampleScreen> {
                   textAlign: TextAlign.center,
                   style: TextStyle(color: Colors.grey),
                 ),
+                const SizedBox(height: 60),
               ],
             ),
           ),

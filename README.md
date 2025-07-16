@@ -89,8 +89,9 @@ FireworkShow(
 | `particleSpeedVariance` | `double` | `0.2` | Variance in particle speed |
 | `particleColors` | `List<Color>` | `[red, blue, yellow, green]` | Colors for particles |
 | `ringColor` | `Color` | `Colors.white` | Color of the explosion ring |
+| `gravity` | `double` | `50.0` | Gravity effect on particles (downward acceleration) |
 
-**Note:** Particles travel continuously and their final distance is determined by their fade speed. When a particle completely fades out, it's removed from the animation. This creates a more realistic effect where particles don't stop moving while still visible.
+**Note:** Particles travel continuously and their final distance is determined by their fade speed. When a particle completely fades out, it's removed from the animation. This creates a more realistic effect where particles don't stop moving while still visible. The gravity parameter adds realistic downward acceleration to particles, making them fall naturally over time.
 
 ## Examples
 
@@ -101,6 +102,7 @@ Firework(
   particleCount: 25,
   particleRingGlow: true,
   ringColor: Colors.amber,
+  gravity: 80.0,
 )
 ```
 
@@ -112,6 +114,16 @@ Firework(
   particleColors: [Colors.white],
   particleCount: 8,
   particleRingGlow: false,
+  gravity: 30.0,
+)
+```
+
+### Zero Gravity Firework
+```dart
+Firework(
+  particleColors: [Colors.cyan, Colors.blue],
+  particleCount: 15,
+  gravity: 0.0,
 )
 ```
 
@@ -147,7 +159,6 @@ FireworkShow(
 1. **Performance**: Always provide an `onComplete` callback to manage widget lifecycle
 2. **Positioning**: Use `MediaQuery.of(context).size` for responsive positioning
 3. **Colors**: Use contrasting colors for better visibility
-4. **Shows**: Space fireworks in shows with appropriate delays for best effect
 
 ## Technical Details
 

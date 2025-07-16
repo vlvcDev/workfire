@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'workfire.dart';
+import 'package:workfire/workfire.dart';
 
 void main() {
   runApp(const MyApp());

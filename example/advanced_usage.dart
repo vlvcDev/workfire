@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../lib/workfire.dart';
+import 'package:workfire/workfire.dart';
 
 void main() {
   runApp(const AdvancedFireworkExample());
@@ -129,8 +129,6 @@ class _AdvancedFireworkScreenState extends State<AdvancedFireworkScreen> {
                     '• Multiple firework sequences\n'
                     '• Varied particle counts and colors\n'
                     '• Different animation curves\n'
-                    '• Performance optimization',
-                    style: TextStyle(color: Colors.white70),
                   ),
                 ),
               ],
@@ -147,7 +145,8 @@ class _AdvancedFireworkScreenState extends State<AdvancedFireworkScreen> {
                   startingPosition: Offset(size.width * 0.2, size.height),
                   endingPosition: Offset(size.width * 0.2, size.height * 0.3),
                   particleColors: const [Colors.red, Colors.pink, Colors.orange],
-                  particleCount: 18,
+                  particleCount: 36,
+                  particleLength: 12,
                   curve: Curves.easeOut,
                   rocketDuration: const Duration(milliseconds: 600),
                 ),
@@ -211,7 +210,7 @@ class _AdvancedFireworkScreenState extends State<AdvancedFireworkScreen> {
                   particleColors: colors[index],
                   particleCount: 12 + (index % 3) * 4,
                   particleSpeed: 120 + (index % 2) * 30,
-                  curve: index % 2 == 0 ? Curves.easeOut : Curves.bounceOut,
+                  curve: index % 2 == 0 ? Curves.easeOut : Curves.easeIn,
                   rocketDuration: Duration(milliseconds: 500 + (index % 3) * 100),
                   particleSpeedVariance: 0.3,
                   particleFadeVariance: 0.3,

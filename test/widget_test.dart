@@ -1,30 +1,71 @@
-// This is a basic Flutter widget test.
-//
-// To perform an interaction with a widget in your test, use the WidgetTester
-// utility in the flutter_test package. For example, you can send tap and scroll
-// gestures. You can also use WidgetTester to find child widgets in the widget
-// tree, read text, and verify that the values of widget properties are correct.
-
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-
-import 'package:workfire/main.dart';
+import 'package:workfire/workfire.dart';
 
 void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
-    // Build our app and trigger a frame.
-    await tester.pumpWidget(const MyApp());
+  group('Firework Widget Tests', () {
+    testWidgets('Firework widget can be created', (WidgetTester tester) async {
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Scaffold(
+            body: Firework(
+              startingPosition: const Offset(100, 500),
+              endingPosition: const Offset(200, 200),
+              particleColors: const [Colors.red, Colors.blue],
+            ),
+          ),
+        ),
+      );
+      
+      expect(find.byType(Firework), findsOneWidget);
+    });
 
-    // Verify that our counter starts at 0.
-    expect(find.text('0'), findsOneWidget);
-    expect(find.text('1'), findsNothing);
+    testWidgets('Firework widget with custom properties can be created', (WidgetTester tester) async {
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Scaffold(
+            body: Firework(
+              startingPosition: const Offset(100, 500),
+              endingPosition: const Offset(200, 200),
+              particleColors: const [Colors.red, Colors.blue, Colors.green],
+              ringColor: Colors.yellow,
+              particleCount: 15,
+              gravity: 75.0,
+            ),
+          ),
+        ),
+      );
+      
+      expect(find.byType(Firework), findsOneWidget);
+    });
+  });
 
-    // Tap the '+' icon and trigger a frame.
-    await tester.tap(find.byIcon(Icons.add));
-    await tester.pump();
+  group('FireworkConfig Tests', () {
+    test('FireworkConfig can be created with default values', () {
+      final config = FireworkConfig(
+        delay: Duration.zero,
+        startingPosition: const Offset(100, 500),
+        endingPosition: const Offset(200, 200),
+        particleColors: const [Colors.red, Colors.blue],
+      );
+      
+      expect(config.delay, Duration.zero);
+      expect(config.startingPosition, const Offset(100, 500));
+      expect(config.endingPosition, const Offset(200, 200));
+      expect(config.particleColors, const [Colors.red, Colors.blue]);
+      expect(config.gravity, 100.0); // Default gravity from FireworkConfig
+    });
 
-    // Verify that our counter has incremented.
-    expect(find.text('0'), findsNothing);
-    expect(find.text('1'), findsOneWidget);
+    test('FireworkConfig can be created with custom gravity', () {
+      final config = FireworkConfig(
+        delay: Duration.zero,
+        startingPosition: const Offset(100, 500),
+        endingPosition: const Offset(200, 200),
+        particleColors: const [Colors.red, Colors.blue],
+        gravity: 75.0,
+      );
+      
+      expect(config.gravity, 75.0);
+    });
   });
 }
