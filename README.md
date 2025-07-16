@@ -9,7 +9,8 @@ A beautiful, performant, and customizable firework widget for Flutter applicatio
 - **Performance optimized**: Automatic cleanup and efficient rendering
 - **Easy to use**: Simple API for single fireworks or complex shows
 - **Cross-platform**: Works on all Flutter-supported platforms
-![workfire_demo](https://github.com/user-attachments/assets/b9ed747c-c830-4f1c-92a1-d97b138201c2)
+<img src="https://github.com/user-attachments/assets/b9ed747c-c830-4f1c-92a1-d97b138201c2" alt="workfire_demo" width="400"/>
+
 
 ## Installation
 
