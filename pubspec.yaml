@@ -11,8 +11,6 @@ topics:
   - fireworks
   - effects
   - particles
-  - physics
-  - ui
 
 environment:
   sdk: ^3.8.1
