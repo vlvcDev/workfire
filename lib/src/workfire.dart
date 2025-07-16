@@ -1,37 +1,92 @@
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
 
-/// A customizable firework widget that creates beautiful firework animations
-/// The widget is completely click-through and designed for performance
+/// A customizable firework widget that creates beautiful firework animations.
+/// 
+/// The widget is completely click-through and designed for performance.
+/// It consists of two phases: a rocket phase and an explosion phase.
+/// 
+/// ## Example Usage
+/// ```dart
+/// Firework(
+///   startingPosition: Offset(100, 500),
+///   endingPosition: Offset(200, 200),
+///   particleColors: [Colors.red, Colors.orange, Colors.yellow],
+///   onComplete: () => print('Firework completed!'),
+/// )
+/// ```
 class Firework extends StatefulWidget {
-  // Part 1 - Rocket parameters
+  /// The starting position of the rocket. If null, defaults to bottom center of screen.
   final Offset? startingPosition;
+  
+  /// The ending position where the rocket explodes. If null, defaults to center of screen.
   final Offset? endingPosition;
+  
+  /// Whether the rocket trail is visible during the rocket phase.
   final bool rocketIsVisible;
+  
+  /// The animation curve for the rocket's movement.
   final Curve curve;
+  
+  /// The color of the rocket trail.
   final Color rocketColor;
+  
+  /// The duration of the rocket phase animation.
   final Duration rocketDuration;
 
-  // Part 2 - Explosion parameters
+  /// The speed at which the explosion ring expands (pixels per second).
   final double ringSpeed;
+  
+  /// The thickness of the explosion ring border.
   final double ringThickness;
+  
+  /// The speed at which the explosion ring fades out.
   final double ringFadeSpeed;
+  
+  /// The number of particles in the explosion.
   final int particleCount;
+  
+  /// The speed at which particles fade out.
   final double particleFadeSpeed;
+  
+  /// The variance in particle fade speed (0.0 to 1.0).
   final double particleFadeVariance;
+  
+  /// The length of each particle in pixels.
   final double particleLength;
+  
+  /// The width of each particle in pixels.
   final double particleWidth;
+  
+  /// Whether particles have a glowing effect.
   final bool particleRingGlow;
+  
+  /// The speed at which particles move away from the explosion center.
   final double particleSpeed;
+  
+  /// The variance in particle speed (0.0 to 1.0).
   final double particleSpeedVariance;
+  
+  /// The colors that particles can have. Colors are randomly assigned to particles.
   final List<Color> particleColors;
+  
+  /// The color of the explosion ring.
   final Color ringColor;
+  
+  /// The gravity force applied to particles (pixels per second squared).
+  /// Higher values make particles fall faster.
   final double gravity;
 
-  // Control parameters
+  /// Called when the entire firework animation completes.
   final VoidCallback? onComplete;
+  
+  /// Whether to automatically start the animation when the widget is built.
   final bool autoStart;
 
+  /// Creates a firework widget with customizable properties.
+  /// 
+  /// All parameters are optional and have sensible defaults.
+  /// The firework will automatically start animating unless [autoStart] is false.
   const Firework({
     super.key,
     this.startingPosition,
@@ -388,11 +443,39 @@ class _Particle {
   });
 }
 
-/// A widget that manages multiple fireworks and makes them easy to sequence
+/// A widget that manages multiple fireworks and makes them easy to sequence.
+/// 
+/// This widget allows you to create complex firework displays by specifying
+/// multiple fireworks with different timings and configurations.
+/// 
+/// ## Example Usage
+/// ```dart
+/// FireworkShow(
+///   fireworks: [
+///     FireworkConfig(
+///       delay: Duration.zero,
+///       startingPosition: Offset(100, 500),
+///       endingPosition: Offset(200, 200),
+///       particleColors: [Colors.red, Colors.pink],
+///     ),
+///     FireworkConfig(
+///       delay: Duration(milliseconds: 500),
+///       startingPosition: Offset(300, 500),
+///       endingPosition: Offset(400, 200),
+///       particleColors: [Colors.blue, Colors.cyan],
+///     ),
+///   ],
+///   onComplete: () => print('Show completed!'),
+/// )
+/// ```
 class FireworkShow extends StatefulWidget {
+  /// The list of firework configurations to display in sequence.
   final List<FireworkConfig> fireworks;
+  
+  /// Called when all fireworks in the show have completed.
   final VoidCallback? onComplete;
 
+  /// Creates a firework show with the specified firework configurations.
   const FireworkShow({super.key, required this.fireworks, this.onComplete});
 
   @override
@@ -475,30 +558,90 @@ class _FireworkShowState extends State<FireworkShow> {
   }
 }
 
-/// Configuration for a single firework in a show
+/// Configuration for a single firework in a show.
+/// 
+/// This class contains all the parameters needed to customize a firework's
+/// appearance and behavior when used in a [FireworkShow].
+/// 
+/// ## Example Usage
+/// ```dart
+/// FireworkConfig(
+///   delay: Duration(milliseconds: 500),
+///   startingPosition: Offset(100, 500),
+///   endingPosition: Offset(200, 200),
+///   particleColors: [Colors.red, Colors.orange],
+///   particleCount: 30,
+///   gravity: 120.0,
+/// )
+/// ```
 class FireworkConfig {
+  /// The delay before this firework starts after the show begins.
   final Duration delay;
+  
+  /// The starting position of the rocket. If null, defaults to bottom center of screen.
   final Offset? startingPosition;
+  
+  /// The ending position where the rocket explodes. If null, defaults to center of screen.
   final Offset? endingPosition;
+  
+  /// Whether the rocket trail is visible during the rocket phase.
   final bool rocketIsVisible;
+  
+  /// The animation curve for the rocket's movement.
   final Curve curve;
+  
+  /// The color of the rocket trail.
   final Color rocketColor;
+  
+  /// The duration of the rocket phase animation.
   final Duration rocketDuration;
+  
+  /// The speed at which the explosion ring expands (pixels per second).
   final double ringSpeed;
+  
+  /// The thickness of the explosion ring border.
   final double ringThickness;
+  
+  /// The speed at which the explosion ring fades out.
   final double ringFadeSpeed;
+  
+  /// The number of particles in the explosion.
   final int particleCount;
+  
+  /// The speed at which particles fade out.
   final double particleFadeSpeed;
+  
+  /// The variance in particle fade speed (0.0 to 1.0).
   final double particleFadeVariance;
+  
+  /// The length of each particle in pixels.
   final double particleLength;
+  
+  /// The width of each particle in pixels.
   final double particleWidth;
+  
+  /// Whether particles have a glowing effect.
   final bool particleRingGlow;
+  
+  /// The speed at which particles move away from the explosion center.
   final double particleSpeed;
+  
+  /// The variance in particle speed (0.0 to 1.0).
   final double particleSpeedVariance;
+  
+  /// The colors that particles can have. Colors are randomly assigned to particles.
   final List<Color> particleColors;
+  
+  /// The color of the explosion ring.
   final Color ringColor;
+  
+  /// The gravity force applied to particles (pixels per second squared).
+  /// Higher values make particles fall faster.
   final double gravity;
 
+  /// Creates a firework configuration with customizable properties.
+  /// 
+  /// All parameters are optional and have sensible defaults for typical firework effects.
   const FireworkConfig({
     this.delay = Duration.zero,
     this.startingPosition,

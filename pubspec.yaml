@@ -5,6 +5,14 @@ homepage: https://github.com/vlvcDev/workfire
 repository: https://github.com/vlvcDev/workfire
 issue_tracker: https://github.com/vlvcDev/workfire/issues
 documentation: https://github.com/vlvcDev/workfire#readme
+topics:
+  - widget
+  - animation
+  - fireworks
+  - effects
+  - particles
+  - physics
+  - ui
 
 environment:
   sdk: ^3.8.1
