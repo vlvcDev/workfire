@@ -1,5 +1,5 @@
 name: workfire
-description: A beautiful, performant, and customizable firework widget for Flutter applications with realistic physics and animations.
+description: A beautiful, performant, and customizable firework widget for Flutter applications with realistic physics and comprehensive animation controls.
 version: 1.0.1
 homepage: https://github.com/vlvcDev/workfire
 repository: https://github.com/vlvcDev/workfire
@@ -11,6 +11,9 @@ topics:
   - fireworks
   - effects
   - particles
+  - physics
+  - ui
+  - visual-effects
 
 environment:
   sdk: ^3.8.1
@@ -27,27 +30,6 @@ dev_dependencies:
 
 flutter:
   # This package is a Dart package that contains Flutter widgets
-  # To learn more about Flutter packages: https://flutter.dev/developing-packages/
-
-  # For details regarding adding assets from package dependencies, see
-  # https://flutter.dev/to/asset-from-package
-
-  # To add custom fonts to your application, add a fonts section here,
-  # in this "flutter" section. Each entry in this list should have a
-  # "family" key with the font family name, and a "fonts" key with a
-  # list giving the asset and other descriptors for the font. For
-  # example:
-  # fonts:
-  #   - family: Schyler
-  #     fonts:
-  #       - asset: fonts/Schyler-Regular.ttf
-  #       - asset: fonts/Schyler-Italic.ttf
-  #         style: italic
-  #   - family: Trajan Pro
-  #     fonts:
-  #       - asset: fonts/TrajanPro.ttf
-  #       - asset: fonts/TrajanPro_Bold.ttf
-  #         weight: 700
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/to/font-from-package

@@ -16,7 +16,7 @@ Add `workfire` to your `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  workfire: ^1.0.0
+  workfire: ^1.0.1
 ```
 
 ## Quick Start
@@ -153,6 +153,24 @@ FireworkShow(
   ),
 )
 ```
+
+## API Reference
+
+### Core Classes
+
+- **`Firework`** - The main widget for creating single firework animations
+- **`FireworkShow`** - Widget for orchestrating multiple fireworks in sequence  
+- **`FireworkConfig`** - Configuration class for customizing firework properties in shows
+
+### Key Features
+
+- **Realistic Physics**: Gravity effects and natural particle movement
+- **Spiral Rocket Paths**: Configurable spiral trajectories with intensity and frequency controls
+- **Performance Optimized**: Efficient rendering with automatic cleanup
+- **Fully Customizable**: Every aspect of the animation can be configured
+- **Click-through Design**: Won't interfere with your app's touch interactions
+
+For detailed API documentation, see the [API docs](https://pub.dev/documentation/workfire/latest/).
 
 ## Best Practices
 

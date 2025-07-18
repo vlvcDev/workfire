@@ -2,89 +2,109 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 
 /// A customizable firework widget that creates beautiful firework animations.
-/// 
+///
 /// The widget is completely click-through and designed for performance.
 /// It consists of two phases: a rocket phase and an explosion phase.
-/// 
+///
 /// ## Example Usage
 /// ```dart
+/// // Basic firework
 /// Firework(
 ///   startingPosition: Offset(100, 500),
 ///   endingPosition: Offset(200, 200),
 ///   particleColors: [Colors.red, Colors.orange, Colors.yellow],
 ///   onComplete: () => print('Firework completed!'),
 /// )
+///
+/// // Spiral firework
+/// Firework(
+///   startingPosition: Offset(100, 500),
+///   endingPosition: Offset(200, 200),
+///   rocketSpiral: true,
+///   rocketSpiralIntensity: 2.0,
+///   rocketSpiralFrequency: 3.0,
+///   particleColors: [Colors.cyan, Colors.blue, Colors.purple],
+/// )
 /// ```
 class Firework extends StatefulWidget {
   /// The starting position of the rocket. If null, defaults to bottom center of screen.
   final Offset? startingPosition;
-  
+
   /// The ending position where the rocket explodes. If null, defaults to center of screen.
   final Offset? endingPosition;
-  
+
   /// Whether the rocket trail is visible during the rocket phase.
   final bool rocketIsVisible;
-  
+
   /// The animation curve for the rocket's movement.
   final Curve curve;
-  
+
   /// The color of the rocket trail.
   final Color rocketColor;
-  
+
+  /// Whether the rocket follows a spiral path during its flight.
+  final bool rocketSpiral;
+
+  /// The intensity of the spiral effect (higher values = wider spiral).
+  final double rocketSpiralIntensity;
+
+  /// The frequency of the spiral effect (higher values = more spirals).
+  final double rocketSpiralFrequency;
+
   /// The duration of the rocket phase animation.
   final Duration rocketDuration;
 
   /// The speed at which the explosion ring expands (pixels per second).
   final double ringSpeed;
-  
+
   /// The thickness of the explosion ring border.
   final double ringThickness;
-  
+
   /// The speed at which the explosion ring fades out.
   final double ringFadeSpeed;
-  
+
   /// The number of particles in the explosion.
   final int particleCount;
-  
+
   /// The speed at which particles fade out.
   final double particleFadeSpeed;
-  
+
   /// The variance in particle fade speed (0.0 to 1.0).
   final double particleFadeVariance;
-  
+
   /// The length of each particle in pixels.
   final double particleLength;
-  
+
   /// The width of each particle in pixels.
   final double particleWidth;
-  
+
   /// Whether particles have a glowing effect.
   final bool particleRingGlow;
-  
+
   /// The speed at which particles move away from the explosion center.
   final double particleSpeed;
-  
+
   /// The variance in particle speed (0.0 to 1.0).
   final double particleSpeedVariance;
-  
+
   /// The colors that particles can have. Colors are randomly assigned to particles.
   final List<Color> particleColors;
-  
+
   /// The color of the explosion ring.
   final Color ringColor;
-  
+
   /// The gravity force applied to particles (pixels per second squared).
   /// Higher values make particles fall faster.
   final double gravity;
 
   /// Called when the entire firework animation completes.
   final VoidCallback? onComplete;
-  
+
   /// Whether to automatically start the animation when the widget is built.
   final bool autoStart;
 
   /// Creates a firework widget with customizable properties.
-  /// 
+  ///
   /// All parameters are optional and have sensible defaults.
   /// The firework will automatically start animating unless [autoStart] is false.
   const Firework({
@@ -94,6 +114,9 @@ class Firework extends StatefulWidget {
     this.rocketIsVisible = true,
     this.curve = Curves.easeInOut,
     this.rocketColor = Colors.white,
+    this.rocketSpiral = false,
+    this.rocketSpiralIntensity = 2.0,
+    this.rocketSpiralFrequency = 2.0,
     this.rocketDuration = const Duration(milliseconds: 600),
     this.ringSpeed = 120.0,
     this.ringThickness = 3.0,
@@ -188,6 +211,13 @@ class _FireworkState extends State<Firework> with TickerProviderStateMixin {
     }
   }
 
+  /// Manually restart the firework animation
+  void restart() {
+    if (mounted) {
+      _resetAnimation();
+    }
+  }
+
   void _startExplosion() {
     if (!mounted) return;
 
@@ -244,16 +274,83 @@ class _FireworkState extends State<Firework> with TickerProviderStateMixin {
     _updatePositions();
   }
 
+  @override
+  void didUpdateWidget(Firework oldWidget) {
+    super.didUpdateWidget(oldWidget);
+
+    // Check if any parameters that affect the animation have changed
+    if (widget.rocketDuration != oldWidget.rocketDuration ||
+        widget.particleFadeSpeed != oldWidget.particleFadeSpeed ||
+        widget.particleFadeVariance != oldWidget.particleFadeVariance ||
+        widget.rocketSpiral != oldWidget.rocketSpiral ||
+        widget.rocketSpiralIntensity != oldWidget.rocketSpiralIntensity ||
+        widget.rocketSpiralFrequency != oldWidget.rocketSpiralFrequency ||
+        widget.curve != oldWidget.curve) {
+      // Reinitialize controllers with new parameters
+      _rocketController.dispose();
+      _explosionController.dispose();
+      _initializeControllers();
+    }
+
+    // Update positions if position-related parameters changed
+    if (widget.startingPosition != oldWidget.startingPosition ||
+        widget.endingPosition != oldWidget.endingPosition ||
+        widget.rocketSpiral != oldWidget.rocketSpiral ||
+        widget.rocketSpiralIntensity != oldWidget.rocketSpiralIntensity ||
+        widget.rocketSpiralFrequency != oldWidget.rocketSpiralFrequency) {
+      _updatePositions();
+    }
+
+    // Reset the animation state if not auto-started or if parameters changed significantly
+    if (!widget.autoStart || _needsReset(oldWidget)) {
+      _resetAnimation();
+    }
+  }
+
+  bool _needsReset(Firework oldWidget) {
+    return widget.rocketSpiral != oldWidget.rocketSpiral ||
+        widget.rocketSpiralIntensity != oldWidget.rocketSpiralIntensity ||
+        widget.rocketSpiralFrequency != oldWidget.rocketSpiralFrequency ||
+        widget.startingPosition != oldWidget.startingPosition ||
+        widget.endingPosition != oldWidget.endingPosition;
+  }
+
+  void _resetAnimation() {
+    if (!mounted) return;
+
+    _rocketController.reset();
+    _explosionController.reset();
+
+    setState(() {
+      _isExploding = false;
+      _isComplete = false;
+    });
+
+    if (widget.autoStart) {
+      WidgetsBinding.instance.addPostFrameCallback((_) => _startFirework());
+    }
+  }
+
   void _updatePositions() {
     final size = MediaQuery.of(context).size;
 
     _startPos = widget.startingPosition ?? Offset(size.width / 2, size.height);
     _endPos = widget.endingPosition ?? Offset(size.width / 2, size.height / 2);
 
-    _rocketPosition = Tween<Offset>(
-      begin: _startPos,
-      end: _endPos,
-    ).animate(_rocketProgress);
+    if (widget.rocketSpiral) {
+      // Create a spiral path animation
+      _rocketPosition = _SpiralAnimation(
+        begin: _startPos,
+        end: _endPos,
+        intensity: widget.rocketSpiralIntensity,
+        frequency: widget.rocketSpiralFrequency,
+      ).animate(_rocketProgress);
+    } else {
+      _rocketPosition = Tween<Offset>(
+        begin: _startPos,
+        end: _endPos,
+      ).animate(_rocketProgress);
+    }
 
     _rocketSize = Tween<double>(begin: 1.0, end: 0.0).animate(
       CurvedAnimation(
@@ -277,14 +374,25 @@ class _FireworkState extends State<Firework> with TickerProviderStateMixin {
             AnimatedBuilder(
               animation: _rocketController,
               builder: (context, child) {
-                // Calculate the angle the rocket should point based on its direction
-                final direction = _endPos - _startPos;
-                final angle =
-                    math.atan2(direction.dy, direction.dx) + math.pi / 2;
+                final currentPosition = _rocketPosition.value;
+                double angle;
+
+                if (widget.rocketSpiral &&
+                    _rocketPosition is _SpiralAnimationWrapper) {
+                  // Use the spiral animation's direction calculation
+                  final spiralAnimation =
+                      _rocketPosition as _SpiralAnimationWrapper;
+                  final direction = spiralAnimation.getDirection();
+                  angle = math.atan2(direction.dy, direction.dx) + math.pi / 2;
+                } else {
+                  // Original calculation for non-spiral rockets
+                  final direction = _endPos - _startPos;
+                  angle = math.atan2(direction.dy, direction.dx) + math.pi / 2;
+                }
 
                 return Positioned(
-                  left: _rocketPosition.value.dx - 2,
-                  top: _rocketPosition.value.dy - 10,
+                  left: currentPosition.dx - 2,
+                  top: currentPosition.dy - 10,
                   child: Transform.scale(
                     scale: _rocketSize.value,
                     child: Transform.rotate(
@@ -443,11 +551,149 @@ class _Particle {
   });
 }
 
+/// A custom animation that creates a spiral path between two points.
+class _SpiralAnimation extends Animation<Offset> {
+  final Offset begin;
+  final Offset end;
+  final double intensity;
+  final double frequency;
+  final Animation<double> parent;
+
+  _SpiralAnimation({
+    required this.begin,
+    required this.end,
+    required this.intensity,
+    required this.frequency,
+  }) : parent = const AlwaysStoppedAnimation(0.0);
+
+  Animation<Offset> animate(Animation<double> parent) {
+    return _SpiralAnimationWrapper(
+      begin: begin,
+      end: end,
+      intensity: intensity,
+      frequency: frequency,
+      parent: parent,
+    );
+  }
+
+  @override
+  void addListener(VoidCallback listener) => parent.addListener(listener);
+
+  @override
+  void addStatusListener(AnimationStatusListener listener) =>
+      parent.addStatusListener(listener);
+
+  @override
+  void removeListener(VoidCallback listener) => parent.removeListener(listener);
+
+  @override
+  void removeStatusListener(AnimationStatusListener listener) =>
+      parent.removeStatusListener(listener);
+
+  @override
+  AnimationStatus get status => parent.status;
+
+  @override
+  Offset get value => begin;
+}
+
+/// Wrapper class that actually implements the spiral animation logic.
+class _SpiralAnimationWrapper extends Animation<Offset> {
+  final Offset begin;
+  final Offset end;
+  final double intensity;
+  final double frequency;
+  final Animation<double> parent;
+
+  _SpiralAnimationWrapper({
+    required this.begin,
+    required this.end,
+    required this.intensity,
+    required this.frequency,
+    required this.parent,
+  });
+
+  @override
+  void addListener(VoidCallback listener) => parent.addListener(listener);
+
+  @override
+  void addStatusListener(AnimationStatusListener listener) =>
+      parent.addStatusListener(listener);
+
+  @override
+  void removeListener(VoidCallback listener) => parent.removeListener(listener);
+
+  @override
+  void removeStatusListener(AnimationStatusListener listener) =>
+      parent.removeStatusListener(listener);
+
+  @override
+  AnimationStatus get status => parent.status;
+
+  @override
+  Offset get value {
+    final progress = parent.value;
+
+    // Calculate the base linear interpolation
+    final baseOffset = Offset.lerp(begin, end, progress)!;
+
+    // Calculate the perpendicular direction for the spiral
+    final direction = end - begin;
+    final perpendicular = Offset(-direction.dy, direction.dx).normalize();
+
+    // Calculate the spiral offset using sine wave
+    final spiralOffset =
+        math.sin(progress * 2 * math.pi * frequency) *
+        intensity *
+        10.0 * // Base scaling factor
+        (1.0 - progress); // Fade out spiral effect as rocket approaches target
+
+    // Apply the spiral offset perpendicular to the flight path
+    return baseOffset + perpendicular * spiralOffset;
+  }
+
+  /// Gets the current direction vector for the spiral animation
+  Offset getDirection() {
+    final progress = parent.value;
+    final deltaTime = 0.01; // Small time step for derivative calculation
+
+    // Calculate current and next positions to determine movement direction
+    final nextProgress = math.min(1.0, progress + deltaTime);
+    final nextPosition = _getPositionAtProgress(nextProgress);
+    final currentPosition = _getPositionAtProgress(progress);
+
+    final movementDirection = nextPosition - currentPosition;
+    return movementDirection.normalize();
+  }
+
+  /// Helper method to get position at a specific progress
+  Offset _getPositionAtProgress(double progress) {
+    final baseOffset = Offset.lerp(begin, end, progress)!;
+    final direction = end - begin;
+    final perpendicular = Offset(-direction.dy, direction.dx).normalize();
+    final spiralOffset =
+        math.sin(progress * 2 * math.pi * frequency) *
+        intensity *
+        10.0 *
+        (1.0 - progress);
+    return baseOffset + perpendicular * spiralOffset;
+  }
+}
+
+/// Extension to normalize an Offset vector.
+extension OffsetExtension on Offset {
+  Offset normalize() {
+    final length = distance;
+    if (length == 0) return this;
+    return this / length;
+  }
+}
+
 /// A widget that manages multiple fireworks and makes them easy to sequence.
-/// 
+///
 /// This widget allows you to create complex firework displays by specifying
 /// multiple fireworks with different timings and configurations.
-/// 
+///
 /// ## Example Usage
 /// ```dart
 /// FireworkShow(
@@ -471,7 +717,7 @@ class _Particle {
 class FireworkShow extends StatefulWidget {
   /// The list of firework configurations to display in sequence.
   final List<FireworkConfig> fireworks;
-  
+
   /// Called when all fireworks in the show have completed.
   final VoidCallback? onComplete;
 
@@ -510,6 +756,9 @@ class _FireworkShowState extends State<FireworkShow> {
               rocketIsVisible: config.rocketIsVisible,
               curve: config.curve,
               rocketColor: config.rocketColor,
+              rocketSpiral: config.rocketSpiral,
+              rocketSpiralIntensity: config.rocketSpiralIntensity,
+              rocketSpiralFrequency: config.rocketSpiralFrequency,
               rocketDuration: config.rocketDuration,
               ringSpeed: config.ringSpeed,
               ringThickness: config.ringThickness,
@@ -559,12 +808,13 @@ class _FireworkShowState extends State<FireworkShow> {
 }
 
 /// Configuration for a single firework in a show.
-/// 
+///
 /// This class contains all the parameters needed to customize a firework's
 /// appearance and behavior when used in a [FireworkShow].
-/// 
+///
 /// ## Example Usage
 /// ```dart
+/// // Basic firework configuration
 /// FireworkConfig(
 ///   delay: Duration(milliseconds: 500),
 ///   startingPosition: Offset(100, 500),
@@ -573,74 +823,94 @@ class _FireworkShowState extends State<FireworkShow> {
 ///   particleCount: 30,
 ///   gravity: 120.0,
 /// )
+///
+/// // Spiral firework configuration
+/// FireworkConfig(
+///   delay: Duration(milliseconds: 500),
+///   startingPosition: Offset(100, 500),
+///   endingPosition: Offset(200, 200),
+///   rocketSpiral: true,
+///   rocketSpiralIntensity: 1.5,
+///   rocketSpiralFrequency: 2.0,
+///   particleColors: [Colors.cyan, Colors.blue],
+/// )
 /// ```
 class FireworkConfig {
   /// The delay before this firework starts after the show begins.
   final Duration delay;
-  
+
   /// The starting position of the rocket. If null, defaults to bottom center of screen.
   final Offset? startingPosition;
-  
+
   /// The ending position where the rocket explodes. If null, defaults to center of screen.
   final Offset? endingPosition;
-  
+
   /// Whether the rocket trail is visible during the rocket phase.
   final bool rocketIsVisible;
-  
+
   /// The animation curve for the rocket's movement.
   final Curve curve;
-  
+
   /// The color of the rocket trail.
   final Color rocketColor;
-  
+
+  /// Whether the rocket follows a spiral path during its flight.
+  final bool rocketSpiral;
+
+  /// The intensity of the spiral effect (higher values = wider spiral).
+  final double rocketSpiralIntensity;
+
+  /// The frequency of the spiral effect (higher values = more spirals).
+  final double rocketSpiralFrequency;
+
   /// The duration of the rocket phase animation.
   final Duration rocketDuration;
-  
+
   /// The speed at which the explosion ring expands (pixels per second).
   final double ringSpeed;
-  
+
   /// The thickness of the explosion ring border.
   final double ringThickness;
-  
+
   /// The speed at which the explosion ring fades out.
   final double ringFadeSpeed;
-  
+
   /// The number of particles in the explosion.
   final int particleCount;
-  
+
   /// The speed at which particles fade out.
   final double particleFadeSpeed;
-  
+
   /// The variance in particle fade speed (0.0 to 1.0).
   final double particleFadeVariance;
-  
+
   /// The length of each particle in pixels.
   final double particleLength;
-  
+
   /// The width of each particle in pixels.
   final double particleWidth;
-  
+
   /// Whether particles have a glowing effect.
   final bool particleRingGlow;
-  
+
   /// The speed at which particles move away from the explosion center.
   final double particleSpeed;
-  
+
   /// The variance in particle speed (0.0 to 1.0).
   final double particleSpeedVariance;
-  
+
   /// The colors that particles can have. Colors are randomly assigned to particles.
   final List<Color> particleColors;
-  
+
   /// The color of the explosion ring.
   final Color ringColor;
-  
+
   /// The gravity force applied to particles (pixels per second squared).
   /// Higher values make particles fall faster.
   final double gravity;
 
   /// Creates a firework configuration with customizable properties.
-  /// 
+  ///
   /// All parameters are optional and have sensible defaults for typical firework effects.
   const FireworkConfig({
     this.delay = Duration.zero,
@@ -649,6 +919,9 @@ class FireworkConfig {
     this.rocketIsVisible = true,
     this.curve = Curves.easeInOut,
     this.rocketColor = Colors.white,
+    this.rocketSpiral = false,
+    this.rocketSpiralIntensity = 1.0,
+    this.rocketSpiralFrequency = 1.0,
     this.rocketDuration = const Duration(milliseconds: 600),
     this.ringSpeed = 140.0,
     this.ringThickness = 3.0,
