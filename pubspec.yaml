@@ -10,10 +10,7 @@ topics:
   - animation
   - fireworks
   - effects
-  - particles
-  - physics
   - ui
-  - visual-effects
 
 environment:
   sdk: ^3.8.1
