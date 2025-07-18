@@ -1,7 +1,7 @@
 name: workfire
 description: A beautiful, performant, and customizable firework widget for Flutter applications with realistic physics and comprehensive animation controls.
-version: 1.0.1
-homepage: https://github.com/vlvcDev/workfire
+version: 1.0.2
+homepage: https://vlvcdev.github.io/workfire/
 repository: https://github.com/vlvcDev/workfire
 issue_tracker: https://github.com/vlvcDev/workfire/issues
 documentation: https://github.com/vlvcDev/workfire#readme

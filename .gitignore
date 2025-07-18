@@ -43,3 +43,7 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+# Deployment scripts (optional - remove if you want to include them)
+deploy-example.bat
+deploy-example.sh

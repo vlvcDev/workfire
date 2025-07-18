@@ -2,6 +2,8 @@
 
 A beautiful, performant, and customizable firework widget for Flutter applications.
 
+**[🚀 Try the Interactive Demo](https://vlvcdev.github.io/workfire/)**
+
 ## Features
 
 - **Click-through design**: Fireworks won't interfere with your app's UI
@@ -16,7 +18,7 @@ Add `workfire` to your `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  workfire: ^1.0.1
+  workfire: ^1.0.2
 ```
 
 ## Quick Start
@@ -171,6 +173,8 @@ FireworkShow(
 - **Click-through Design**: Won't interfere with your app's touch interactions
 
 For detailed API documentation, see the [API docs](https://pub.dev/documentation/workfire/latest/).
+
+**[🎆 Interactive Demo](https://vlvcdev.github.io/workfire/)** - Try all features live in your browser!
 
 ## Best Practices
 
